@@ -801,7 +801,7 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandlerEx(HWND hwnd, UINT msg, WPA
     case WM_IME_COMPOSITION:
     {
         // Handling WM_IME_COMPOSITION ensure that WM_IME_CHAR value is correct even for MBCS apps.
-        // (see #9099, #3653 and https://stackoverflow.com/questions/77450354 topics) 
+        // (see #9099, #3653 and https://stackoverflow.com/questions/77450354 topics)
         LRESULT result = ::DefWindowProcW(hwnd, msg, wParam, lParam);
         return (lParam & GCS_RESULTSTR) ? 1 : result;
     }
@@ -967,6 +967,7 @@ float ImGui_ImplWin32_GetDpiScaleForHwnd(void* hwnd)
 // [experimental]
 // Borrowed from GLFW's function updateFramebufferTransparency() in src/win32_window.c
 // (the Dwm* functions are Vista era functions but we are borrowing logic from GLFW)
+#if 0 // disable this api - broken and useless on mingw
 void ImGui_ImplWin32_EnableAlphaCompositing(void* hwnd)
 {
     if (!_IsWindowsVistaOrGreater())
@@ -995,6 +996,7 @@ void ImGui_ImplWin32_EnableAlphaCompositing(void* hwnd)
         ::DwmEnableBlurBehindWindow((HWND)hwnd, &bb);
     }
 }
+#endif
 
 //---------------------------------------------------------------------------------------------------------
 
