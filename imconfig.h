@@ -13,12 +13,32 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
+#include <assert.h>
+#include <stdio.h>
+#include <winsock2.h>
+#include "windows.h"
 
 //---- Define assertion handler. Defaults to calling assert().
 // - If your macro uses multiple statements, make sure is enclosed in a 'do { .. } while (0)' block so it can be used as a single statement.
 // - Compiling with NDEBUG will usually strip out assert() to nothing, which is NOT recommended because we use asserts to notify of programmer mistakes.
 //#define IM_ASSERT(_EXPR)  MyAssert(_EXPR)
 //#define IM_ASSERT(_EXPR)  ((void)(_EXPR))     // Disable asserts
+#define IM_ASSERT(_EXPR) \
+    do { \
+        if (!(_EXPR)) { \
+            char _msg[1024]; \
+            snprintf(_msg, sizeof(_msg), \
+                "Assertion failed!\n\nExpression: %s\nFile: %s\nLine: %d", \
+                #_EXPR, __FILE__, __LINE__); \
+            MessageBoxA(nullptr, _msg, "Assertion Failed", MB_OK | MB_ICONERROR); \
+            assert(_EXPR); \
+        } \
+    } while (0)
+
+struct ImGuiContext;
+extern thread_local ImGuiContext* ek_ImGuiTLS;
+
+#define GImGui ek_ImGuiTLS
 
 //---- Define attributes of all API symbols declarations, e.g. for DLL under Windows
 // Using Dear ImGui via a shared library is not recommended, because of function call overhead and because we don't guarantee backward nor forward ABI compatibility.
