@@ -696,11 +696,11 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandlerEx(HWND hwnd, UINT msg, WPA
         if (msg == WM_RBUTTONDOWN || msg == WM_RBUTTONDBLCLK) { button = 1; }
         if (msg == WM_MBUTTONDOWN || msg == WM_MBUTTONDBLCLK) { button = 2; }
         if (msg == WM_XBUTTONDOWN || msg == WM_XBUTTONDBLCLK) { button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1) ? 3 : 4; }
-        HWND hwnd_with_capture = ::GetCapture();
+        /*HWND hwnd_with_capture = ::GetCapture();
         if (bd->MouseButtonsDown != 0 && hwnd_with_capture != hwnd) // Did we externally lost capture?
             bd->MouseButtonsDown = 0;
         if (bd->MouseButtonsDown == 0 && hwnd_with_capture == nullptr)
-            ::SetCapture(hwnd); // Allow us to read mouse coordinates when dragging mouse outside of our window bounds.
+            ::SetCapture(hwnd);*/ // Allow us to read mouse coordinates when dragging mouse outside of our window bounds.
         bd->MouseButtonsDown |= 1 << button;
         io.AddMouseSourceEvent(mouse_source);
         io.AddMouseButtonEvent(button, true);
@@ -718,8 +718,8 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandlerEx(HWND hwnd, UINT msg, WPA
         if (msg == WM_MBUTTONUP) { button = 2; }
         if (msg == WM_XBUTTONUP) { button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1) ? 3 : 4; }
         bd->MouseButtonsDown &= ~(1 << button);
-        if (bd->MouseButtonsDown == 0 && ::GetCapture() == hwnd)
-            ::ReleaseCapture();
+        /*if (bd->MouseButtonsDown == 0 && ::GetCapture() == hwnd)
+            ::ReleaseCapture();*/
         io.AddMouseSourceEvent(mouse_source);
         io.AddMouseButtonEvent(button, false);
         return 0;
@@ -828,7 +828,7 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandlerEx(HWND hwnd, UINT msg, WPA
 #endif
         return 0;
     }
-    return 0;
+    return 0x69420;
 }
 
 
